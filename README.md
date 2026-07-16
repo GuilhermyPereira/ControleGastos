@@ -17,26 +17,26 @@ Sistema de controle de gastos residenciais desenvolvido como desafio técnico. P
 
 ## Estrutura do projeto
 
-ControleGastos/
-├── Backend/                  # API .NET
-│   ├── Controlers/           # Endpoints HTTP (Pessoas, Transacoes, Totais)
-│   ├── Data/                 # DbContext do Entity Framework Core
-│   ├── DTOs/                 # Objetos de transferência de dados (entrada/saída da API)
-│   ├── Models/                # Entidades de domínio (Pessoa, Transacao, TipoTransacao)
-│   ├── Migrations/            # Migrations do EF Core
-│   └── Program.cs             # Configuração da aplicação (DI, CORS, Swagger, migrations automáticas)
-└── frontend/                  # SPA React
-└── src/
-├── components/         # Componentes de UI (formulários e listagens)
-├── services/           # Camada de comunicação com a API (axios)
-├── types/              # Tipos TypeScript compartilhados
-└── utils/              # Funções utilitárias (ex: formatação de moeda)
+    ControleGastos/
+    ├── Backend/                  # API .NET
+    │   ├── Controlers/           # Endpoints HTTP (Pessoas, Transacoes, Totais)
+    │   ├── Data/                 # DbContext do Entity Framework Core
+    │   ├── DTOs/                 # Objetos de transferência de dados (entrada/saída da API)
+    │   ├── Models/                # Entidades de domínio (Pessoa, Transacao, TipoTransacao)
+    │   ├── Migrations/            # Migrations do EF Core
+    │   └── Program.cs             # Configuração da aplicação (DI, CORS, Swagger, migrations automáticas)
+    └── frontend/                  # SPA React
+        └── src/
+            ├── components/         # Componentes de UI (formulários e listagens)
+            ├── services/           # Camada de comunicação com a API (axios)
+            ├── types/              # Tipos TypeScript compartilhados
+            └── utils/              # Funções utilitárias (ex: formatação de moeda)
 
 ## Como executar
 
 ### Pré-requisitos
-- [.NET SDK 8+](https://dotnet.microsoft.com/download)
-- [Node.js 18+](https://nodejs.org/)
+- .NET SDK 8+ (https://dotnet.microsoft.com/download)
+- Node.js 18+ (https://nodejs.org/)
 
 ### Back-end
 
@@ -46,7 +46,7 @@ dotnet restore
 dotnet run
 ```
 
-A API sobe em `http://localhost:5248` (a porta pode variar — confira no terminal). O banco SQLite (`gastos.db`) é criado automaticamente na primeira execução, e as migrations são aplicadas automaticamente ao iniciar a aplicação.
+A API sobe em `http://localhost:5248` (a porta pode variar, confira no terminal). O banco SQLite (`gastos.db`) é criado automaticamente na primeira execução, e as migrations são aplicadas automaticamente ao iniciar a aplicação.
 
 Documentação interativa (Swagger): `http://localhost:5248/swagger`
 
@@ -62,7 +62,7 @@ npm run dev
 
 A aplicação sobe em `http://localhost:5173`.
 
-> **Importante:** o front-end está configurado para consumir a API em `http://localhost:5248` (arquivo `frontend/src/services/api.ts`) e o back-end libera CORS apenas para `http://localhost:5173` (arquivo `Backend/Program.cs`). Se as portas forem diferentes no seu ambiente, ajuste esses dois pontos.
+**Importante:** o front-end está configurado para consumir a API em `http://localhost:5248` (arquivo `frontend/src/services/api.ts`) e o back-end libera CORS apenas para `http://localhost:5173` (arquivo `Backend/Program.cs`). Se as portas forem diferentes no seu ambiente, ajuste esses dois pontos.
 
 ## Funcionalidades
 
@@ -88,12 +88,12 @@ A aplicação sobe em `http://localhost:5173`.
 ## Decisões técnicas
 
 - **SQLite**: escolhido por não exigir instalação de um servidor de banco separado, mantendo a persistência simples em um único arquivo (`gastos.db`), adequado ao escopo do desafio.
-- **DTOs em vez de expor entidades diretamente**: evita ciclos de serialização (Pessoa ↔ Transacao) e dá controle explícito sobre o que a API expõe.
+- **DTOs em vez de expor entidades diretamente**: evita ciclos de serialização (Pessoa <-> Transacao) e dá controle explícito sobre o que a API expõe.
 - **DataAnnotations nos DTOs**: validações de formato (campos obrigatórios, limites de tamanho/valor) são feitas declarativamente e verificadas automaticamente pelo ASP.NET Core (`[ApiController]`), retornando 400 antes mesmo do código do controller ser executado. Regras que dependem de consulta ao banco (pessoa existir, regra do menor de idade) permanecem validadas explicitamente nos controllers.
 - **Exclusão em cascata no banco**: garante a integridade mesmo se a exclusão for feita por outro meio que não a API (ex: acesso direto ao banco), em vez de depender apenas de lógica na aplicação.
 - **Enum serializado como texto**: tanto no banco (`HasConversion<string>()`) quanto no JSON da API (`JsonStringEnumConverter`), para manter os dados legíveis (`"Receita"`/`"Despesa"`) em vez de números.
 - **Migrations aplicadas automaticamente no startup**: simplifica a execução do projeto para avaliação, sem exigir passos manuais adicionais de setup do banco.
-- **Edição de pessoa (extra)**: a especificação original não exige edição de pessoa nem de transação. Optamos por implementar apenas a edição de pessoa como funcionalidade extra, mantendo transações fiéis ao especificado (criação e listagem apenas). A regra que impede reduzir a idade de uma pessoa com receitas para menor de 18 anos é uma decisão de design para manter a consistência da regra de negócio das transações, já que ela não é definida explicitamente no enunciado.
+- **Edição de pessoa (extra)**: a especificação original não exige edição de pessoa nem de transação. Optei por implementar apenas a edição de pessoa como funcionalidade extra, mantendo transações fiéis ao especificado (criação e listagem apenas). A regra que impede reduzir a idade de uma pessoa com receitas para menor de 18 anos é uma decisão de design para manter a consistência da regra de negócio das transações, já que ela não é definida explicitamente no enunciado.
 
 ## Testando as regras de negócio
 
