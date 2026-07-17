@@ -100,10 +100,10 @@ A aplicação sobe em `http://localhost:5173`.
 Um roteiro sugerido para validar o sistema:
 
 1. Cadastre uma pessoa maior de idade e uma menor de idade.
-2. Tente cadastrar uma Receita para a pessoa menor de idade — deve ser bloqueado.
-3. Cadastre uma Despesa para a pessoa menor de idade — deve funcionar.
+2. Tente cadastrar uma Receita para a pessoa menor de idade, deve ser bloqueado.
+3. Cadastre uma Despesa para a pessoa menor de idade, deve funcionar.
 4. Cadastre Receitas e Despesas para a pessoa maior de idade.
 5. Consulte a aba Totais e confira se os valores por pessoa e o total geral batem.
-6. Tente editar a idade da pessoa maior de idade (que já tem receita) para menos de 18 — deve ser bloqueado.
+6. Tente editar a idade da pessoa maior de idade (que já tem receita) para menos de 18, deve ser bloqueado.
 7. Exclua uma pessoa e confirme que suas transações desaparecem das listagens e dos totais.
 8. Feche e reabra o back-end para confirmar que os dados persistem.
